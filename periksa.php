@@ -18,8 +18,6 @@
     <br>
     <div class = "container">  
         <?php
-            $id_pasien = '';
-            $id_dokter = '';
             $tgl_periksa = '';
             $catatan = '';
             if (isset($_GET['id'])) {
@@ -90,7 +88,7 @@
             </div>
             <!-- menurunkan posisi submit -->
             <div class="row mt-3">
-                <div class = col>
+                <div class = "col">
                 <button type="submit" class="btn btn-primary rounded-pill px-3 mt-auto" name="simpan">Simpan</button>
                 </div>
             </div>
@@ -114,7 +112,9 @@
             <tbody>
                 <!-- Kode PHP untuk menampilkan semua isi dari tabel urut-->
                 <?php
-                    $result = mysqli_query($mysqli, "SELECT id_pasien, id_dokter, tgl_periksa, catatan FROM periksa LEFT JOIN dokter ON (periksa.id_dokter=dokter.nama) LEFT JOIN pasien ON (periksa.id_pasien=pasien.nama) ORDER BY periksa.tgl_periksa DESC");
+                    $result = mysqli_query($mysqli, "SELECT pr.*,d.nama as 'nama_dokter', p.nama as 'nama_pasien' 
+                    FROM periksa pr LEFT JOIN dokter d ON (pr.id_dokter=d.id) LEFT JOIN pasien p ON (pr.id_pasien=p.id) 
+                    ORDER BY pr.tgl_periksa DESC");
                     $no = 1;
                     while ($data = mysqli_fetch_array($result)) {
                     ?>
@@ -125,8 +125,12 @@
                             <td><?php echo $data['tgl_periksa'] ?></td>
                             <td><?php echo $data['catatan'] ?></td>
                             <td>
-                                <a class="btn btn-success rounded-pill px-3" href="index.php?page=periksa&id=<?php echo $data['id'] ?>">Ubah</a>
-                                <a class="btn btn-danger rounded-pill px-3" href="index.php?page=periksa&id=<?php echo $data['id'] ?>&aksi=hapus">Hapus</a>
+                                <a class="btn btn-success rounded-pill px-3" 
+                                href="index.php?page=periksa&id=<?php echo $data['id'] ?>">
+                                Ubah</a>
+                                <a class="btn btn-danger rounded-pill px-3" 
+                                href="index.php?page=periksa&id=<?php echo $data['id'] ?>&aksi=hapus">
+                                Hapus</a>
                             </td>
                         </tr>
                     <?php
@@ -145,13 +149,12 @@
                                                     WHERE
                                                     id_periksa = '" . $_POST['id_periksa'] . "'");
                 } else {
-                    $tambah = mysqli_query($mysqli, "INSERT INTO periksa(id_pasien,id_dokter,tgl_periksa,catatan,aksi) 
+                    $tambah = mysqli_query($mysqli, "INSERT INTO periksa(id_pasien,id_dokter,tgl_periksa,catatan) 
                                                     VALUES ( 
                                                         '" . $_POST['id_pasien'] . "',
                                                         '" . $_POST['id_dokter'] . "',
                                                         '" . $_POST['tgl_periksa'] . "',
-                                                        '" . $_POST['catatan'] . "',
-                                                        '0'
+                                                        '" . $_POST['catatan'] . "'
                                                         )");
                 }
                 echo "<script> 
@@ -161,12 +164,13 @@
             if (isset($_GET['aksi'])) {
                 if ($_GET['aksi'] == 'hapus') {
                     $hapus = mysqli_query($mysqli, "DELETE FROM periksa WHERE id_periksa = '" . $_GET['id'] . "'");
-                } else if ($_GET['aksi'] == 'ubah_status') {
-                    $ubah_status = mysqli_query($mysqli, "UPDATE periksa SET 
-                                                    status = '" . $_GET['status'] . "' 
-                                                    WHERE
-                                                    id_periksa = '" . $_GET['id'] . "'");
-                }
+                } 
+                // else if ($_GET['aksi'] == 'ubah_status') {
+                //     $ubah_status = mysqli_query($mysqli, "UPDATE periksa SET 
+                //                                     status = '" . $_GET['status'] . "' 
+                //                                     WHERE
+                //                                     id_periksa = '" . $_GET['id'] . "'");
+                // }
                 echo "<script> 
                         document.location='index.php?page=periksa';
                         </script>";
