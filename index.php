@@ -1,3 +1,6 @@
+<?php
+  include_once('koneksi.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +10,7 @@
 
     <!-- Bootstrap offline -->
 
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">   
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">   
     
     <title>Poliklinik</title>   <!--Judul Halaman-->
 </head>
@@ -36,8 +39,8 @@
                 Data Master
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Dokter</a></li>
-                <li><a class="dropdown-item" href="#">Pasien</a></li>
+                <li><a class="dropdown-item" href="index.php?page=dokter">Dokter</a></li>
+                <li><a class="dropdown-item" href="index.php?page=pasien">Pasien</a></li>
               </ul>
             </li>
             <li class="nav-item">
@@ -63,5 +66,6 @@
         }
         ?>
     </main>  
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
